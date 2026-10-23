@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:stackfood_multivendor_restaurant/common/widgets/custom_popup_menu_button.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
 import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
+
 class BusinessAnalyticsWidget extends StatefulWidget {
   final ProfileController profileController;
   const BusinessAnalyticsWidget({super.key, required this.profileController});
@@ -79,31 +81,24 @@ class _BusinessAnalyticsWidgetState extends State<BusinessAnalyticsWidget> {
         Expanded(child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).primaryColor,
             boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.2), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 3))],
           ),
           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              ),
-              padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-              child: Image.asset(Images.walletBold, height: 25),
-            ),
+            Image.asset(Images.walletBold, height: 28, color: primaryYellow),
             const SizedBox(height: Dimensions.paddingSizeSmall),
 
             Text(
               'total_earning'.tr,
-              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color),
+              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white),
             ),
             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
             Text(
               PriceConverter.convertPrice(totalEarning),
-              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color), textDirection: TextDirection.ltr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Colors.white), textDirection: TextDirection.ltr,
             ),
 
           ]),
@@ -114,31 +109,24 @@ class _BusinessAnalyticsWidgetState extends State<BusinessAnalyticsWidget> {
         Expanded(child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).primaryColor,
             boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.2), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 3))],
           ),
           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              ),
-              padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-              child: Image.asset(Images.shapeImage, height: 25),
-            ),
+            Image.asset(Images.shapeImage, height: 28, color: primaryYellow),
             const SizedBox(height: Dimensions.paddingSizeSmall),
 
             Text(
               'total_orders'.tr,
-              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color),
+              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white),
             ),
             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
             Text(
               '$totalOrders',
-              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color), textDirection: TextDirection.ltr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Colors.white), textDirection: TextDirection.ltr,
             ),
 
           ]),

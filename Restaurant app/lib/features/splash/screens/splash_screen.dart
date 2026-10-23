@@ -6,9 +6,11 @@ import 'package:stackfood_multivendor_restaurant/features/splash/controllers/spl
 import 'package:stackfood_multivendor_restaurant/features/chat/domain/models/notification_body_model.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/app_constants.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -135,11 +137,19 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _globalKey,
-      backgroundColor: const Color(0xFF05BDBF),
-      body: SizedBox.expand(
-        child: Image.asset(Images.splash, fit: BoxFit.cover),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        key: _globalKey,
+        backgroundColor: primaryTeal,
+        body: Center(
+          child: Image.asset(
+            Images.gogoPartnerIcon,
+            width: 180,
+            height: 180,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
     );
   }

@@ -30,14 +30,14 @@ class WithdrawalWidget extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: Row(children: [
-        Image.asset(Images.walletBold, color: onPrimaryText, scale: 1.5,),
+        Image.asset(Images.walletBold, color: primaryYellow, scale: 1.5,),
         const SizedBox(width: Dimensions.paddingSizeSmall),
 
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(isPayNow ? 'payable_balance'.tr : 'withdrawal_balance'.tr, style: robotoRegular.copyWith(color: onPrimaryText)),
+            Text(isPayNow ? 'payable_balance'.tr : 'withdrawal_balance'.tr, style: robotoRegular.copyWith(color: Colors.white)),
 
-            Text(PriceConverter.convertPrice(isPayNow ? profileController.profileModel!.cashInHands : profileController.profileModel!.balance), style: robotoBold.copyWith(color: onPrimaryText)),
+            Text(PriceConverter.convertPrice(isPayNow ? profileController.profileModel!.cashInHands : profileController.profileModel!.balance), style: robotoBold.copyWith(color: Colors.white)),
           ]),
         ),
 

@@ -17,6 +17,7 @@ import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class RestaurantScreen extends StatefulWidget {
@@ -80,13 +81,23 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
     super.dispose();
   }
 
+  PreferredSizeWidget _restaurantAppBar(BuildContext context) {
+    return CustomAppBarWidget(
+      title: 'my_restaurant'.tr,
+      isBackButtonExist: false,
+      backgroundColor: Theme.of(context).primaryColor,
+      foregroundColor: Colors.white,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RestaurantController>(builder: (restController) {
       return GetBuilder<ProfileController>(builder: (profileController) {
         if(profileController.profileModel == null) {
           return Scaffold(
-            appBar: CustomAppBarWidget(title: 'my_restaurant'.tr, isBackButtonExist: false),
+            appBar: _restaurantAppBar(context),
             body: const Center(child: CircularProgressIndicator()),
           );
         }
@@ -95,7 +106,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
         bool isFilterActive = restController.selectedFoodType != 'all' || restController.selectedStockType != 'all';
 
         return (profileController.modulePermission?.myRestaurant ?? false) ? Scaffold(
-          appBar: CustomAppBarWidget(title: 'my_restaurant'.tr, isBackButtonExist: false),
+          appBar: _restaurantAppBar(context),
 
           body: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

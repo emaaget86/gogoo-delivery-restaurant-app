@@ -7,7 +7,6 @@ import 'package:stackfood_multivendor_restaurant/features/splash/controllers/spl
 import 'package:stackfood_multivendor_restaurant/features/payment/widgets/withdraw_request_bottom_sheet_widget.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
 import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
-import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
@@ -74,13 +73,13 @@ class WalletCardWidget extends StatelessWidget {
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
           Text(profileController.profileModel!.dynamicBalanceType!, style: robotoMedium.copyWith(
-            fontSize: Dimensions.fontSizeSmall, color: onPrimaryText, fontWeight: FontWeight.w600,
+            fontSize: Dimensions.fontSizeSmall, color: Colors.white, fontWeight: FontWeight.w600,
           )),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
           Text(
             PriceConverter.convertPrice(profileController.profileModel!.dynamicBalance!),
-            style: robotoBold.copyWith(fontSize: 24, color: onPrimaryText),
+            style: robotoBold.copyWith(fontSize: 24, color: Colors.white),
             textDirection: TextDirection.ltr,
           ),
 
@@ -215,7 +214,7 @@ class AdjustPaymentButton extends StatelessWidget {
                             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                             color: Theme.of(context).primaryColor,
                           ),
-                          child: !controller.adjustmentLoading ? Text('ok'.tr, style: robotoBold.copyWith(color: onPrimaryText, fontSize: Dimensions.fontSizeLarge),)
+                          child: !controller.adjustmentLoading ? Text('ok'.tr, style: robotoBold.copyWith(color: Colors.white, fontSize: Dimensions.fontSizeLarge),)
                               : const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white)),
                         ),
                       ),
@@ -257,13 +256,13 @@ class ShowBalanceWidget extends StatelessWidget {
       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     
         Text(profileController.profileModel!.dynamicBalanceType!, style: robotoMedium.copyWith(
-          fontSize: Dimensions.fontSizeSmall, color: onPrimaryText, fontWeight: FontWeight.w600,
+          fontSize: Dimensions.fontSizeSmall, color: Colors.white, fontWeight: FontWeight.w600,
         )),
         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
     
         Text(
           PriceConverter.convertPrice(profileController.profileModel!.dynamicBalance!),
-          style: robotoBold.copyWith(fontSize: 24, color: onPrimaryText),
+          style: robotoBold.copyWith(fontSize: 24, color: Colors.white),
           textDirection: TextDirection.ltr,
         ),
     
