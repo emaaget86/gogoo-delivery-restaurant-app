@@ -30,14 +30,22 @@ class WithdrawalWidget extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: Row(children: [
-        Image.asset(Images.walletBold, color: primaryYellow, scale: 1.5,),
+        Container(
+          width: 46, height: 46,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+          ),
+          alignment: Alignment.center,
+          child: Image.asset(Images.walletBold, color: primaryTeal, width: 28, height: 28),
+        ),
         const SizedBox(width: Dimensions.paddingSizeSmall),
 
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(isPayNow ? 'payable_balance'.tr : 'withdrawal_balance'.tr, style: robotoRegular.copyWith(color: Colors.white)),
 
-            Text(PriceConverter.convertPrice(isPayNow ? profileController.profileModel!.cashInHands : profileController.profileModel!.balance), style: robotoBold.copyWith(color: Colors.white)),
+            Text(PriceConverter.formatWalletAmount(isPayNow ? profileController.profileModel!.cashInHands : profileController.profileModel!.balance), style: robotoBold.copyWith(color: Colors.white)),
           ]),
         ),
 
@@ -64,7 +72,7 @@ class PayNowButton extends StatelessWidget {
           if(Get.find<SplashController>().configModel!.activePaymentMethodList!.isEmpty || !Get.find<SplashController>().configModel!.digitalPayment!){
             showCustomSnackBar('currently_there_are_no_payment_options_available_please_contact_admin_regarding_any_payment_process_or_queries'.tr);
           }else if(Get.find<SplashController>().configModel!.minAmountToPayRestaurant! > profileController.profileModel!.cashInHands!){
-            showCustomSnackBar('${'you_do_not_have_sufficient_balance_to_pay_the_minimum_payable_balance_is'.tr} ${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.minAmountToPayRestaurant)}');
+            showCustomSnackBar('${'you_do_not_have_sufficient_balance_to_pay_the_minimum_payable_balance_is'.tr} ${PriceConverter.formatWalletAmount(Get.find<SplashController>().configModel!.minAmountToPayRestaurant)}');
           }
         }
       },

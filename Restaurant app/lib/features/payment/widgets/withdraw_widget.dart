@@ -21,7 +21,7 @@ class WithdrawWidget extends StatelessWidget {
 
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-            Text(PriceConverter.convertPrice(withdrawModel.amount), style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge), textDirection: TextDirection.ltr,),
+            Text(PriceConverter.formatWalletAmount(withdrawModel.amount), style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge), textDirection: TextDirection.ltr,),
             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
             Text('${'transferred_to'.tr} ${withdrawModel.bankName}', style: robotoRegular.copyWith(

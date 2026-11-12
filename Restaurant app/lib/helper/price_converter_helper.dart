@@ -19,6 +19,30 @@ class PriceConverter {
         .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
         '${isRightSide ? ' ${Get.find<SplashController>().configModel!.currencySymbol!}' : ''}';
   }
+  static String applyDisplayCurrency(String formatted, String? symbol) {
+    if (symbol == null || symbol.isEmpty) {
+      return formatted;
+    }
+    final String normalized = symbol.trim().toLowerCase();
+    if (normalized != 'br' && normalized != 'birr') {
+      return formatted;
+    }
+    return formatted.replaceAll(symbol, 'ETB');
+  }
+
+  static String displayCurrencyLabel() {
+    final String? symbol = Get.find<SplashController>().configModel?.currencySymbol;
+    if (symbol == null || symbol.isEmpty) {
+      return '';
+    }
+    return applyDisplayCurrency(symbol, symbol);
+  }
+
+  static String formatWalletAmount(double? price) {
+    final String? symbol = Get.find<SplashController>().configModel?.currencySymbol;
+    return applyDisplayCurrency(convertPrice(price), symbol);
+  }
+
   static String priceFormate(double? price, {bool currencySymbolDirectionRight = true}) {
     return '${currencySymbolDirectionRight ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
         '${(toFixed(price!)).toStringAsFixed(Get.find<SplashController>().configModel!.digitAfterDecimalPoint ?? 2)

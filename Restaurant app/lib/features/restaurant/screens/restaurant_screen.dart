@@ -9,6 +9,7 @@ import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/ann
 import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/filter_data_bottom_sheet.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/domain/models/profile_model.dart';
 import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/product_view_widget.dart';
+import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/restaurant_availability_toggle.dart';
 import 'package:stackfood_multivendor_restaurant/helper/date_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
@@ -119,7 +120,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                   Container(
                     margin: EdgeInsets.all(Dimensions.paddingSizeDefault),
                     padding: EdgeInsets.all(3),
-                    height: 250,
+                    height: 330,
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 0, blurRadius: 5)],
@@ -173,6 +174,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                                     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
                                     maxLines: 1, overflow: TextOverflow.ellipsis,
                                   ),
+                                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                                  const RestaurantAvailabilityToggle(),
 
                                 ]),
                               ),

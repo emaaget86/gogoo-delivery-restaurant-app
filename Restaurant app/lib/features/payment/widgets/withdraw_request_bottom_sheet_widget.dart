@@ -7,8 +7,8 @@ import 'package:stackfood_multivendor_restaurant/common/widgets/custom_text_fiel
 import 'package:stackfood_multivendor_restaurant/features/disbursement/controllers/disbursement_controller.dart';
 import 'package:stackfood_multivendor_restaurant/features/payment/controllers/payment_controller.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
-import 'package:stackfood_multivendor_restaurant/features/splash/controllers/splash_controller.dart';
 import 'package:stackfood_multivendor_restaurant/helper/date_converter_helper.dart';
+import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
@@ -172,7 +172,7 @@ class _WithdrawRequestBottomSheetWidgetState extends State<WithdrawRequestBottom
                     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                     child: CustomTextFieldWidget(
                       hintText: 'enter_withdraw_amount'.tr,
-                      labelText: '${'enter_withdraw_amount'.tr} (${Get.find<SplashController>().configModel?.currencySymbol})',
+                      labelText: '${'enter_withdraw_amount'.tr} (${PriceConverter.displayCurrencyLabel()})',
                       controller: _amountController,
                       capitalization: TextCapitalization.words,
                       inputType: TextInputType.number,

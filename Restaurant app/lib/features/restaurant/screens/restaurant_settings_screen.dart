@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:stackfood_multivendor_restaurant/common/models/config_model.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:stackfood_multivendor_restaurant/common/widgets/confirmation_dialog_widget.dart';
 import 'package:stackfood_multivendor_restaurant/common/widgets/custom_app_bar_widget.dart';
 import 'package:stackfood_multivendor_restaurant/common/widgets/custom_asset_image_widget.dart';
 import 'package:stackfood_multivendor_restaurant/common/widgets/custom_bottom_sheet_widget.dart';
@@ -21,6 +20,8 @@ import 'package:stackfood_multivendor_restaurant/features/language/controllers/l
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
 import 'package:stackfood_multivendor_restaurant/features/restaurant/controllers/restaurant_controller.dart';
 import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/custom_radio_list_tile.dart';
+import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/restaurant_availability_toggle.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/custom_switch_tile.dart';
 import 'package:stackfood_multivendor_restaurant/features/restaurant/widgets/setting_confirmation_bottom_sheet.dart';
 import 'package:stackfood_multivendor_restaurant/features/splash/controllers/splash_controller.dart';
@@ -204,28 +205,29 @@ class _RestaurantSettingsScreenState extends State<RestaurantSettingsScreen> wit
                         Text('status'.tr, style: robotoRegular),
                         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                        profileController.profileModel != null ? Transform.scale(
-                          scale: 0.7,
-                          child: CupertinoSwitch(
-                            value: profileController.profileModel!.restaurants![0].active!,
-                            activeTrackColor: Theme.of(context).primaryColor,
-                            inactiveTrackColor: Theme.of(context).hintColor.withValues(alpha: 0.5),
-                            onChanged: (bool isActive) {
-                              if(Get.find<ProfileController>().modulePermission!.restaurantConfig!){
-                                Get.dialog(ConfirmationDialogWidget(
-                                  icon: Images.warning,
-                                  description: !isActive ? 'are_you_sure_to_close_restaurant'.tr : 'are_you_sure_to_open_restaurant'.tr,
-                                  onYesPressed: () {
-                                    Get.back();
-                                    Get.find<AuthController>().toggleRestaurantClosedStatus();
-                                  },
-                                ));
-                              }else{
-                                showCustomSnackBar('you_have_no_permission_to_access_this_feature'.tr);
-                              }
-                            },
-                          ),
-                        ) : Shimmer(duration: const Duration(seconds: 2), child: Container(height: 30, width: 50, color: Colors.grey[300])),
+                        profileController.profileModel != null ? GetBuilder<AuthController>(builder: (authController) {
+                          final bool isOpen = profileController.profileModel!.restaurants![0].active!;
+                          return Row(mainAxisSize: MainAxisSize.min, children: [
+                            if (authController.restaurantStatusLoading) ...[
+                              const SizedBox(
+                                width: 16, height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: primaryTeal),
+                              ),
+                              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                            ],
+                            Transform.scale(
+                              scale: 0.7,
+                              child: CupertinoSwitch(
+                                value: isOpen,
+                                activeTrackColor: primaryTeal,
+                                inactiveTrackColor: const Color(0xFFBDBDBD),
+                                onChanged: authController.restaurantStatusLoading ? null : (bool isActive) {
+                                  confirmRestaurantAvailabilityChange(isActive);
+                                },
+                              ),
+                            ),
+                          ]);
+                        }) : Shimmer(duration: const Duration(seconds: 2), child: Container(height: 30, width: 50, color: Colors.grey[300])),
 
                       ]),
                     ),

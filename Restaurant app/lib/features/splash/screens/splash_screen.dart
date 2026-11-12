@@ -142,12 +142,27 @@ class SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
         key: _globalKey,
         backgroundColor: primaryTeal,
-        body: Center(
-          child: Image.asset(
-            Images.gogoPartnerIcon,
-            width: 180,
-            height: 180,
-            fit: BoxFit.contain,
+        body: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image(
+                image: AssetImage(Images.gogoMark),
+                width: 132,
+                height: 132,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Partner',
+                style: TextStyle(
+                  color: primaryYellow,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
           ),
         ),
       ),

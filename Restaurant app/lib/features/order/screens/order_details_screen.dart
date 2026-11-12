@@ -40,6 +40,7 @@ import 'package:stackfood_multivendor_restaurant/helper/date_converter_helper.da
 import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/responsive_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
@@ -160,6 +161,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
         double referrerBonusAmount = 0;
         double proDiscount = 0;
         OrderModel? order = controllerOrderModel;
+        final bool isReadyForHandover = order?.orderStatus == 'handover';
+        final Color customerDetailColor = isReadyForHandover ? primaryTeal : (Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF333333));
+        final Color customerMutedColor = isReadyForHandover ? primaryTeal : Theme.of(context).hintColor;
         Restaurant? restaurant;
         bool subscription = false;
         bool showDeliveryTypeCharge = false;
@@ -743,13 +747,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                         Expanded(child: order.deliveryAddress != null ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(
                             order.deliveryAddress?.contactPersonName ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: robotoSemiBold.copyWith(fontSize: Dimensions.fontSizeSmall),
+                            style: robotoSemiBold.copyWith(fontSize: Dimensions.fontSizeSmall, color: customerDetailColor),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                           Text(
                             order.deliveryAddress?.address ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
+                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: customerMutedColor),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
@@ -757,20 +761,20 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                             (order.deliveryAddress?.streetNumber != null && order.deliveryAddress!.streetNumber!.isNotEmpty)
                                 ? Text(
                               '${'street_number'.tr}: ${order.deliveryAddress!.streetNumber!}${(order.deliveryAddress?.house != null && order.deliveryAddress!.house!.isNotEmpty) ? ', ' : ' '}',
-                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: customerMutedColor),
                               maxLines: 1, overflow: TextOverflow.ellipsis,
                             ) : const SizedBox(),
 
                             (order.deliveryAddress?.house != null && order.deliveryAddress!.house!.isNotEmpty) ? Text('${'house'.tr}: ${order.deliveryAddress!.house!}${(order.deliveryAddress!.floor != null && order.deliveryAddress!.floor!.isNotEmpty) ? ', ' : ' '}',
-                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor), maxLines: 1, overflow: TextOverflow.ellipsis,
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: customerMutedColor), maxLines: 1, overflow: TextOverflow.ellipsis,
                             ) : const SizedBox(),
 
                             (order.deliveryAddress?.floor != null && order.deliveryAddress!.floor!.isNotEmpty) ? Text('${'floor'.tr}: ${order.deliveryAddress!.floor!}' ,
-                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor), maxLines: 1, overflow: TextOverflow.ellipsis,
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: customerMutedColor), maxLines: 1, overflow: TextOverflow.ellipsis,
                             ) : const SizedBox(),
                           ]),
 
-                        ]) : Text('walking_customer'.tr, style: robotoMedium)),
+                        ]) : Text('walking_customer'.tr, style: robotoMedium.copyWith(color: isReadyForHandover ? primaryTeal : null))),
 
                         Column(
                           children: [
@@ -785,7 +789,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                                   showCustomSnackBar('unable_to_launch_google_map'.tr);
                                 }
                               },
-                              icon: const Icon(Icons.directions), label: Text('direction'.tr),
+                              icon: Icon(Icons.directions, color: isReadyForHandover ? primaryTeal : Theme.of(context).primaryColor), label: Text('direction'.tr, style: isReadyForHandover ? robotoMedium.copyWith(color: primaryTeal) : null),
                             ) : const SizedBox(),
                             const SizedBox(height: Dimensions.paddingSizeSmall),
 
@@ -801,6 +805,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                                 },
                                 child: Image.asset(
                                   Images.phoneIcon, height: 30, width: 30,
+                                  color: isReadyForHandover ? primaryTeal : null,
                                 ),
                               ) : const SizedBox(),
                               const SizedBox(width: Dimensions.paddingSizeExtraLarge),
@@ -833,6 +838,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                                 },
                                 child: Image.asset(
                                   Images.chatIcon, height: 30, width: 30,
+                                  color: isReadyForHandover ? primaryTeal : null,
                                 ),
                               ) : const SizedBox(),
                             ]),

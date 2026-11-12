@@ -22,6 +22,9 @@ class AuthController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _restaurantStatusLoading = false;
+  bool get restaurantStatusLoading => _restaurantStatusLoading;
+
   bool _notification = true;
   bool get notification => _notification;
 
@@ -243,10 +246,16 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<void> toggleRestaurantClosedStatus() async {
-    bool isSuccess = await authServiceInterface.toggleRestaurantClosedStatus();
-    if (isSuccess) {
-      Get.find<ProfileController>().getProfile();
+    if (_restaurantStatusLoading) {
+      return;
     }
+    _restaurantStatusLoading = true;
+    update();
+    final bool isSuccess = await authServiceInterface.toggleRestaurantClosedStatus();
+    if (isSuccess) {
+      await Get.find<ProfileController>().getProfile();
+    }
+    _restaurantStatusLoading = false;
     update();
   }
 

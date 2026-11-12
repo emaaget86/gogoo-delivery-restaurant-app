@@ -78,19 +78,19 @@ class _WalletScreenState extends State<WalletScreen> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(children: [
-                        WalletWidget(title: 'cash_in_hand'.tr, value: profileController.profileModel!.cashInHands, image: Images.cashInHandBgIcon),
+                        WalletWidget(title: 'cash_in_hand'.tr, value: profileController.profileModel!.cashInHands),
                         const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                        WalletWidget(title: 'withdraw_able_balance'.tr, value: profileController.profileModel!.balance, image: Images.withdrawAbleBalanceBgIcon),
+                        WalletWidget(title: 'withdraw_able_balance'.tr, value: profileController.profileModel!.balance),
                         const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                        WalletWidget(title: 'pending_withdraw'.tr, value: profileController.profileModel!.pendingWithdraw, image: Images.pendingWithdrawBgIcon),
+                        WalletWidget(title: 'pending_withdraw'.tr, value: profileController.profileModel!.pendingWithdraw),
                         const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                        WalletWidget(title: 'already_withdrawn'.tr, value: profileController.profileModel!.alreadyWithdrawn, image: Images.alreadyWithdrawBgIcon),
+                        WalletWidget(title: 'already_withdrawn'.tr, value: profileController.profileModel!.alreadyWithdrawn),
                         const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                        WalletWidget(title: 'total_earning'.tr, value: profileController.profileModel!.totalEarning, image: Images.totalWithdrawBgIcon),
+                        WalletWidget(title: 'total_earning'.tr, value: profileController.profileModel!.totalEarning),
 
                       ]),
                     ),
@@ -247,7 +247,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               child: Row(children: [
                                 Expanded(
                                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                    Text(PriceConverter.convertPrice(paymentController.transactions![index].amount), style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
+                                    Text(PriceConverter.formatWalletAmount(paymentController.transactions![index].amount), style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
                                     const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                                     Text('${'paid_via'.tr} ${paymentController.transactions![index].method?.replaceAll('_', ' ').capitalize??''}', style: robotoRegular.copyWith(

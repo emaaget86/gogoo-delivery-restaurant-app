@@ -51,7 +51,7 @@ class ProductViewWidget extends StatelessWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: Dimensions.paddingSizeDefault,
             mainAxisSpacing:Dimensions.paddingSizeDefault,
-            mainAxisExtent: 111,
+            mainAxisExtent: 156,
             crossAxisCount: 1,
           ),
           physics: const NeverScrollableScrollPhysics(),
@@ -73,7 +73,7 @@ class ProductViewWidget extends StatelessWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: Dimensions.paddingSizeDefault,
             mainAxisSpacing:Dimensions.paddingSizeDefault,
-            mainAxisExtent: 112,
+            mainAxisExtent: 156,
             crossAxisCount: 1,
           ),
           physics: const NeverScrollableScrollPhysics(),

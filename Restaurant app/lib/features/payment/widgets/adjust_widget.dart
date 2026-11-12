@@ -30,7 +30,7 @@ class AdjustWidget extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(profileController.profileModel!.dynamicBalanceType!, style: robotoRegular.copyWith()),
 
-            Text(PriceConverter.convertPrice(profileController.profileModel!.dynamicBalance!), style: robotoBold.copyWith()),
+            Text(PriceConverter.formatWalletAmount(profileController.profileModel!.dynamicBalance!), style: robotoBold.copyWith()),
           ]),
         ),
 

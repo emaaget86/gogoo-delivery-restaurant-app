@@ -14,6 +14,7 @@ import 'package:stackfood_multivendor_restaurant/features/restaurant/domain/mode
 import 'package:stackfood_multivendor_restaurant/helper/date_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/price_converter_helper.dart';
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
@@ -227,34 +228,51 @@ class ProductWidget extends StatelessWidget {
                       PriceConverter.convertPrice(product.price, discount: discount, discountType: discountType),
                       style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, fontWeight: FontWeight.w600, color: Theme.of(context).primaryColor), textDirection: TextDirection.ltr,
                     ),
-                    const Spacer(),
 
-                    ((product.stockType == 'unlimited' || product.itemStock! > 0) && (product.stockType == 'unlimited' || !isOutOfStock)) ? Text(
-                      '${'stock'.tr} : ${product.stockType == 'unlimited' ? 'unlimited'.tr : product.itemStock}',
-                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)),
-                    ) : Container(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'out_of_stock'.tr,
-                            style: robotoRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall),
+                  ]),
+                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
+                  Row(children: [
+
+                    Expanded(
+                      child: ((product.stockType == 'unlimited' || product.itemStock! > 0) && (product.stockType == 'unlimited' || !isOutOfStock)) ? Text(
+                        '${'stock'.tr} : ${product.stockType == 'unlimited' ? 'unlimited'.tr : product.itemStock}',
+                        maxLines: 1, overflow: TextOverflow.ellipsis,
+                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)),
+                      ) : Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'out_of_stock'.tr,
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                                style: robotoRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall),
+                              ),
+                              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                          CustomToolTip(
-                            message: (product.stockType == 'unlimited' || product.itemStock! <= 0) ? 'your_main_stock_is_out_of_stock'.tr : 'one_or_more_variations_are_out_of_stock'.tr,
-                            preferredDirection: AxisDirection.down,
-                            child: Icon(Icons.info_outline, color: Theme.of(context).primaryColor, size: 15),
+                              CustomToolTip(
+                                message: (product.stockType == 'unlimited' || product.itemStock! <= 0) ? 'your_main_stock_is_out_of_stock'.tr : 'one_or_more_variations_are_out_of_stock'.tr,
+                                preferredDirection: AxisDirection.down,
+                                child: Icon(Icons.info_outline, color: Theme.of(context).primaryColor, size: 15),
+                              ),
+
+                            ],
                           ),
-
-                        ],
+                        ),
                       ),
                     ),
+
+                    if (!isCampaign) ...[
+                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                      _FoodAvailabilityToggle(product: product),
+                    ],
 
                   ]),
 
@@ -274,4 +292,51 @@ class ProductWidget extends StatelessWidget {
 
   }
 
+}
+
+class _FoodAvailabilityToggle extends StatelessWidget {
+  final Product product;
+  const _FoodAvailabilityToggle({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    if (product.id == null) {
+      return const SizedBox();
+    }
+    return GetBuilder<RestaurantController>(builder: (restaurantController) {
+      final bool isOn = product.status == 1;
+      final bool updating = restaurantController.isFoodAvailabilityUpdating(product.id);
+      final Color statusColor = isOn ? primaryTeal : const Color(0xFF9E9E9E);
+      return Tooltip(
+        message: isOn ? 'available'.tr : 'unavailable'.tr,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: updating ? null : () => restaurantController.updateFoodAvailability(product, !isOn),
+          child: Row(mainAxisSize: MainAxisSize.min, children: [
+            Text(
+              isOn ? 'ON' : 'OFF',
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: statusColor),
+            ),
+            const SizedBox(width: 2),
+            updating ? const SizedBox(
+              width: 18, height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2, color: primaryTeal),
+            ) : IgnorePointer(
+              child: SizedBox(
+                width: 42, height: 26,
+                child: FittedBox(
+                  child: CupertinoSwitch(
+                    value: isOn,
+                    activeTrackColor: primaryTeal,
+                    inactiveTrackColor: const Color(0xFFBDBDBD),
+                    onChanged: (_) {},
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        ),
+      );
+    });
+  }
 }

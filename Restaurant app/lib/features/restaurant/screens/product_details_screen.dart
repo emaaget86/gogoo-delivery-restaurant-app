@@ -285,7 +285,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 width: 60, height: 30, valueFontSize: Dimensions.fontSizeExtraSmall,
                 activeColor: Theme.of(context).primaryColor,
                 value: restController.isAvailable, onToggle: (bool isActive) {
-                restController.toggleAvailable(restController.product!.id);
+                final product = restController.product;
+                if (product == null || restController.isFoodAvailabilityUpdating(product.id)) {
+                  return;
+                }
+                restController.updateFoodAvailability(product, isActive);
               },
               ),
 

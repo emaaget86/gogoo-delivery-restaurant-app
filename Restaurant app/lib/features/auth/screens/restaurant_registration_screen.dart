@@ -1104,7 +1104,8 @@ class _RestaurantRegistrationScreenState extends State<RestaurantRegistrationScr
                   ),
                   child: CustomButtonWidget(
                     buttonText: authController.storeStatus == 0.1 || authController.storeStatus == 0.6 ? 'next'.tr : 'submit'.tr,
-                    useGradient: true,
+                    color: primaryTeal,
+                    textColor: Colors.white,
                     onPressed: () {
 
                       bool defaultNameNull = false;

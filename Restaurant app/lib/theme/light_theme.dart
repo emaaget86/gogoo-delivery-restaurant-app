@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color primaryTeal = Color(0xFF3FD9CD);
-const Color primaryYellow = Color(0xFFFFD900);
+const Color primaryYellow = Color(0xFFFFD600);
 const Color onPrimaryText = Color(0xFF1A1A1A);
 const Color authTeal = Color(0xFF00A99D);
 
@@ -13,9 +13,9 @@ const LinearGradient authGradient = LinearGradient(
 
 ThemeData authPageTheme(ThemeData base) {
   return base.copyWith(
-    primaryColor: authTeal,
-    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: authTeal)),
-    colorScheme: base.colorScheme.copyWith(primary: authTeal),
+    primaryColor: primaryTeal,
+    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: primaryTeal)),
+    colorScheme: base.colorScheme.copyWith(primary: primaryTeal),
   );
 }
 

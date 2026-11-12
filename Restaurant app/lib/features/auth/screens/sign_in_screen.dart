@@ -8,7 +8,6 @@ import 'package:stackfood_multivendor_restaurant/features/splash/controllers/spl
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
 import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
-import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,10 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
           return Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
 
-            const SizedBox(height: 50),
-
-            Image.asset(Images.logoName, width: 220),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
 
             Container(
               height: 50,
@@ -92,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Container(
                         height: 3,
                         decoration: BoxDecoration(
-                          gradient: authController.ownerTypeIndex == 0 ? authGradient : null,
+                          color: authController.ownerTypeIndex == 0 ? primaryTeal : null,
                         ),
                       ),
 
@@ -116,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Container(
                         height: 3,
                         decoration: BoxDecoration(
-                          gradient: authController.ownerTypeIndex == 1 ? authGradient : null,
+                          color: authController.ownerTypeIndex == 1 ? primaryTeal : null,
                         ),
                       ),
 
@@ -189,7 +185,8 @@ class _SignInScreenState extends State<SignInScreen> {
             CustomButtonWidget(
               buttonText: 'login'.tr,
               isLoading: authController.isLoading,
-              useGradient: true,
+              color: primaryTeal,
+              textColor: Colors.white,
               onPressed: () => _login(authController),
             ),
             SizedBox(height: Get.find<SplashController>().configModel!.toggleRestaurantRegistration! ? Dimensions.paddingSizeExtraSmall : 0),

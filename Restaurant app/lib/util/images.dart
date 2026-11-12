@@ -2,6 +2,7 @@ class Images {
   static const String logo = 'assets/image/logo.png';
   static const String gogoLogo = 'assets/image/gogo_logo.png';
   static const String gogoPartnerIcon = 'assets/image/gogo_partner_icon.png';
+  static const String gogoMark = 'assets/image/gogo_mark.png';
   static const String logoName = 'assets/image/logo_name.png';
   static const String splash = 'assets/image/splash.png';
   static const String arabic = 'assets/image/arabic.png';

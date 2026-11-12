@@ -47,7 +47,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                       Text(
-                        PriceConverter.convertPrice(paymentController.transactions![index].amount),
+                        PriceConverter.formatWalletAmount(paymentController.transactions![index].amount),
                         style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),

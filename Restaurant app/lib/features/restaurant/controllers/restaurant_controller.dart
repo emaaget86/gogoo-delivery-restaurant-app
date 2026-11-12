@@ -87,6 +87,9 @@ class RestaurantController extends GetxController implements GetxService {
   bool _isAvailable = true;
   bool get isAvailable => _isAvailable;
 
+  final Set<int> _foodAvailabilityUpdatingIds = <int>{};
+  bool isFoodAvailabilityUpdating(int? productId) => productId != null && _foodAvailabilityUpdatingIds.contains(productId);
+
   bool _isRecommended = true;
   bool get isRecommended => _isRecommended;
 
@@ -802,14 +805,70 @@ class RestaurantController extends GetxController implements GetxService {
     _isAvailable = isAvailable;
   }
 
-  void toggleAvailable(int? productID) async {
-    bool isSuccess = await restaurantServiceInterface.updateProductStatus(productID, _isAvailable ? 0 : 1);
-    if(isSuccess) {
-      getProductList(offset: '1', foodType: 'all', stockType: 'all');
-      _isAvailable = !_isAvailable;
+  void toggleAvailable(int? productID) {
+    Product? product = _product?.id == productID ? _product : null;
+    product ??= _productById(productID);
+    if (product == null) {
+      return;
+    }
+    updateFoodAvailability(product, !_isAvailable);
+  }
+
+  Future<void> updateFoodAvailability(Product product, bool available) async {
+    final int? productId = product.id;
+    if (productId == null || _foodAvailabilityUpdatingIds.contains(productId)) {
+      return;
+    }
+
+    _foodAvailabilityUpdatingIds.add(productId);
+    update();
+
+    final bool isSuccess = await restaurantServiceInterface.updateProductStatus(productId, available ? 1 : 0);
+    _foodAvailabilityUpdatingIds.remove(productId);
+
+    if (isSuccess) {
+      _applyFoodAvailability(product, available ? 1 : 0);
       showCustomSnackBar('food_status_updated_successfully'.tr, isError: false);
     }
     update();
+  }
+
+  Product? _productById(int? productId) {
+    if (productId == null) {
+      return null;
+    }
+    for (final Product item in _productList ?? <Product>[]) {
+      if (item.id == productId) {
+        return item;
+      }
+    }
+    for (final Product item in _reelProductList ?? <Product>[]) {
+      if (item.id == productId) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  void _applyFoodAvailability(Product product, int status) {
+    product.status = status;
+    void apply(List<Product>? products) {
+      if (products == null) {
+        return;
+      }
+      for (final Product item in products) {
+        if (item.id == product.id) {
+          item.status = status;
+        }
+      }
+    }
+
+    apply(_productList);
+    apply(_reelProductList);
+    if (_product?.id == product.id) {
+      _product!.status = status;
+      _isAvailable = status == 1;
+    }
   }
 
   void setRecommended(bool isRecommended) {
