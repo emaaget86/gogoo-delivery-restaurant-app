@@ -49,6 +49,12 @@ android {
             signingConfig = signingConfigs.getByName("debug") // or "release" if you have real keystore
         }
     }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
 }
 
 kotlin {
