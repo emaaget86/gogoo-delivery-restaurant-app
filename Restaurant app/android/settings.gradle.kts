@@ -69,3 +69,84 @@ fun patchFlutterInAppWebViewProguard() {
 }
 
 patchFlutterInAppWebViewProguard()
+
+// file_picker 11.x skips the Kotlin Gradle Plugin whenever AGP is 9 or newer.
+// Flutter keeps android.builtInKotlin=false, so FilePickerPlugin.kt is never
+// compiled and :app:compileReleaseJavaWithJavac fails with
+// "cannot find symbol com.mr.flutter.plugin.filepicker.FilePickerPlugin".
+// Apply the plugin unless built-in Kotlin is actually enabled. A clean CI
+// checkout still builds because this runs after `flutter pub get`.
+fun patchFilePickerKotlinPlugin() {
+    val pluginsFile = file("../.flutter-plugins-dependencies")
+    if (!pluginsFile.isFile) {
+        return
+    }
+
+    val parsed = groovy.json.JsonSlurper().parse(pluginsFile)
+    if (parsed !is Map<*, *>) {
+        return
+    }
+    val androidPlugins = (parsed["plugins"] as? Map<*, *>)?.get("android") as? List<*> ?: return
+
+    val legacyApply = """
+def isAgp9OrAbove = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger() >= 9
+
+apply plugin: 'com.android.library'
+if (!isAgp9OrAbove) {
+    apply plugin: 'org.jetbrains.kotlin.android'
+}
+""".trimIndent()
+    val fixedApply = """
+def agpMajor = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+def builtInKotlin = providers.gradleProperty("android.builtInKotlin")
+    .map { it.toBoolean() }
+    .orElse(agpMajor >= 9)
+    .get()
+
+apply plugin: 'com.android.library'
+if (agpMajor < 9 || !builtInKotlin) {
+    apply plugin: 'org.jetbrains.kotlin.android'
+}
+""".trimIndent()
+    val legacyKotlinOptions = """
+    |    if (!isAgp9OrAbove) {
+    |        kotlinOptions {
+    |            jvmTarget = JavaVersion.VERSION_17.toString()
+    |        }
+    |    }
+""".trimMargin()
+    val fixedKotlinOptions = """
+    |    if (agpMajor < 9 || !builtInKotlin) {
+    |        kotlinOptions {
+    |            jvmTarget = JavaVersion.VERSION_17.toString()
+    |        }
+    |    }
+""".trimMargin()
+
+    for (entry in androidPlugins) {
+        val plugin = entry as? Map<*, *> ?: continue
+        if (plugin["name"] != "file_picker") {
+            continue
+        }
+        val pluginPath = plugin["path"]?.toString() ?: continue
+        val buildGradle = file(pluginPath).resolve("android/build.gradle")
+        if (!buildGradle.isFile) {
+            continue
+        }
+        val original = buildGradle.readText().replace("\r\n", "\n")
+        if (!original.contains(legacyApply) || !original.contains(legacyKotlinOptions)) {
+            if (!original.contains("android.builtInKotlin")) {
+                println("warning: file_picker Android build was not patched; FilePickerPlugin may fail to compile")
+            }
+            continue
+        }
+        buildGradle.writeText(
+            original
+                .replace(legacyApply, fixedApply)
+                .replace(legacyKotlinOptions, fixedKotlinOptions)
+        )
+        println("Patched file_picker so FilePickerPlugin compiles when android.builtInKotlin=false")
+    }
+}
+
+patchFilePickerKotlinPlugin()

@@ -24,9 +24,10 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Get Dependencies
+      - name: Clean and get dependencies
         run: |
           cd "Restaurant app"
+          flutter clean
           flutter pub get
 
       - name: Build APK
