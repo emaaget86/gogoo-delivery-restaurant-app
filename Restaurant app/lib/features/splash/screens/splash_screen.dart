@@ -25,6 +25,8 @@ class SplashScreenState extends State<SplashScreen> {
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   StreamSubscription<List<ConnectivityResult>>? _onConnectivityChanged;
+  bool _isRouting = false;
+  bool _hasNavigated = false;
 
   @override
   void initState() {
@@ -62,26 +64,40 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
+    if (_isRouting || _hasNavigated) {
+      return;
+    }
+    _isRouting = true;
+
     Get.find<SplashController>().getConfigData().then((isSuccess) async {
-      if (isSuccess) {
-        Timer(const Duration(seconds: 1), () async {
-          double? minimumVersion = _getMinimumVersion();
-          bool isMaintenanceMode = Get.find<SplashController>().configModel!.maintenanceMode!;
-          bool needsUpdate = AppConstants.appVersion < minimumVersion!;
-          bool inMaintenanceForApp = isMaintenanceMode && Get.find<SplashController>().configModel!.maintenanceModeData!.maintenanceSystemSetup!.contains('restaurant_app');
-
-          if (needsUpdate || inMaintenanceForApp) {
-            Get.offNamed(RouteHelper.getUpdateRoute(needsUpdate));
-            return;
-          }
-
-          if (widget.body != null) {
-            await _handleNotificationRouting(widget.body);
-          } else {
-            await _handleDefaultRouting();
-          }
-        });
+      if (!isSuccess) {
+        _isRouting = false;
+        return;
       }
+
+      Timer(const Duration(milliseconds: 3000), () async {
+        if (!mounted || _hasNavigated) {
+          return;
+        }
+
+        double? minimumVersion = _getMinimumVersion();
+        bool isMaintenanceMode = Get.find<SplashController>().configModel!.maintenanceMode!;
+        bool needsUpdate = AppConstants.appVersion < minimumVersion!;
+        bool inMaintenanceForApp = isMaintenanceMode && Get.find<SplashController>().configModel!.maintenanceModeData!.maintenanceSystemSetup!.contains('restaurant_app');
+
+        _hasNavigated = true;
+
+        if (needsUpdate || inMaintenanceForApp) {
+          Get.offNamed(RouteHelper.getUpdateRoute(needsUpdate));
+          return;
+        }
+
+        if (widget.body != null) {
+          await _handleNotificationRouting(widget.body);
+        } else {
+          await _handleDefaultRouting();
+        }
+      });
     });
   }
 
