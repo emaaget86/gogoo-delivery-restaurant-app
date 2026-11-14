@@ -1,3 +1,4 @@
+import 'package:stackfood_multivendor_restaurant/api/api_checker.dart';
 import 'package:stackfood_multivendor_restaurant/api/api_client.dart';
 import 'package:stackfood_multivendor_restaurant/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:stackfood_multivendor_restaurant/features/business/domain/models/package_model.dart';
@@ -129,8 +130,15 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<bool> toggleRestaurantClosedStatus() async {
-    Response response = await apiClient.postData(AppConstants.updateRestaurantStatusUri, {});
-    return (response.statusCode == 200);
+    Response response = await apiClient.postData(AppConstants.updateRestaurantStatusUri, {}, handleError: false);
+    if (response.statusCode == 200) {
+      return true;
+    }
+    final String message = (response.statusText != null && response.statusText!.trim().isNotEmpty)
+        ? response.statusText!.trim()
+        : 'sorry_something_went_wrong'.tr;
+    ApiChecker.checkApi(Response(statusCode: response.statusCode, statusText: message, body: response.body));
+    return false;
   }
 
   @override

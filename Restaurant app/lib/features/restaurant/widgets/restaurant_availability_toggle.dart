@@ -5,7 +5,7 @@ import 'package:stackfood_multivendor_restaurant/common/widgets/confirmation_dia
 import 'package:stackfood_multivendor_restaurant/common/widgets/custom_snackbar_widget.dart';
 import 'package:stackfood_multivendor_restaurant/features/auth/controllers/auth_controller.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
-import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
+import 'package:stackfood_multivendor_restaurant/features/restaurant/domain/models/restaurant_availability_status.dart';
 import 'package:stackfood_multivendor_restaurant/util/dimensions.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
 import 'package:stackfood_multivendor_restaurant/util/styles.dart';
@@ -23,32 +23,42 @@ class RestaurantAvailabilityToggle extends StatelessWidget {
         }
         final bool isOpen = restaurants.first.active == true;
         final bool loading = authController.restaurantStatusLoading;
-        final Color statusColor = isOpen ? primaryTeal : const Color(0xFF9E9E9E);
+        final Color statusColor = restaurantAvailabilityColor(isOpen);
+        final String statusLabel = restaurantAvailabilityLabelKey(isOpen).tr;
 
         return Row(children: [
           Flexible(
             child: Text(
-              isOpen ? 'available'.tr : 'unavailable'.tr,
+              statusLabel,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: statusColor),
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault, color: statusColor, letterSpacing: 0.3),
             ),
           ),
           const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-          loading ? const SizedBox(
-            width: 18, height: 18,
-            child: CircularProgressIndicator(strokeWidth: 2, color: primaryTeal),
-          ) : SizedBox(
+          SizedBox(
             width: 46, height: 28,
             child: FittedBox(
               child: CupertinoSwitch(
                 value: isOpen,
-                activeTrackColor: primaryTeal,
-                inactiveTrackColor: const Color(0xFFBDBDBD),
-                onChanged: (bool isActive) => confirmRestaurantAvailabilityChange(isActive),
+                activeTrackColor: restaurantOpenColor,
+                inactiveTrackColor: restaurantClosedColor,
+                thumbColor: Colors.white,
+                onChanged: (bool isActive) {
+                  if (!loading) {
+                    confirmRestaurantAvailabilityChange(isActive);
+                  }
+                },
               ),
             ),
           ),
+          if (loading) ...[
+            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+            SizedBox(
+              width: 16, height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2, color: statusColor),
+            ),
+          ],
         ]);
       });
     });

@@ -251,12 +251,38 @@ class AuthController extends GetxController implements GetxService {
     }
     _restaurantStatusLoading = true;
     update();
-    final bool isSuccess = await authServiceInterface.toggleRestaurantClosedStatus();
-    if (isSuccess) {
-      await Get.find<ProfileController>().getProfile();
+    try {
+      final bool isSuccess = await authServiceInterface.toggleRestaurantClosedStatus();
+      if (isSuccess) {
+        final bool? previous = _restaurantActiveStatus();
+        final profile = await Get.find<ProfileController>().getProfile();
+        final restaurants = profile?.restaurants;
+        final bool? current = (restaurants != null && restaurants.isNotEmpty) ? restaurants.first.active : null;
+        if (previous != null && (profile == null || current == previous)) {
+          _setRestaurantActiveStatus(previous != true);
+        }
+      }
+    } finally {
+      _restaurantStatusLoading = false;
+      update();
     }
-    _restaurantStatusLoading = false;
-    update();
+  }
+
+  bool? _restaurantActiveStatus() {
+    final restaurants = Get.find<ProfileController>().profileModel?.restaurants;
+    if (restaurants == null || restaurants.isEmpty) {
+      return null;
+    }
+    return restaurants.first.active;
+  }
+
+  void _setRestaurantActiveStatus(bool isOpen) {
+    final restaurants = Get.find<ProfileController>().profileModel?.restaurants;
+    if (restaurants == null || restaurants.isEmpty) {
+      return;
+    }
+    restaurants.first.active = isOpen;
+    Get.find<ProfileController>().update();
   }
 
   Future deleteVendor() async {

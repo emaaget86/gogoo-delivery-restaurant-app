@@ -1403,6 +1403,8 @@
   "order_type_description": "Seleccione el tipo de pedido adecuado para su restaurante",
   "restaurant_availability": "Disponibilidad del restaurante",
   "restaurant_availability_description": "Desactivar el estado desactivará su tienda y mostrará temporalmente como fuera de servicio en la app y sitios web del cliente.",
+  "restaurant_status_open": "ABIERTO",
+  "restaurant_status_closed": "CERRADO",
   "home_delivery_description": "Si se habilita, los clientes pueden elegir la opción de entrega a domicilio desde la app y el sitio web.",
   "take_away_description": "Si se habilita, los clientes pueden elegir la opción para llevar desde la app y el sitio web.",
   "dine_in_description": "Si se habilita, los clientes pueden elegir la opción de comer en el lugar desde la app y el sitio web.",

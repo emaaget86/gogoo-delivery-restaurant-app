@@ -1406,6 +1406,8 @@
   "order_type_description" : "Select the order type that is suitable for your restaurant",
   "restaurant_availability" : "Restaurant Availability",
   "restaurant_availability_description" : "Turning off the status will deactivate your shop and will show temporary off in the customer app & websites",
+  "restaurant_status_open" : "OPEN",
+  "restaurant_status_closed" : "CLOSED",
   "home_delivery_description" : "If enabled customers can choose Home Delivery option from the customer app and website",
   "take_away_description" : "If enabled customers can choose Take Away option from the customer app and website",
   "dine_in_description" : "If enabled customers can choose Dine In option from the customer app and website",

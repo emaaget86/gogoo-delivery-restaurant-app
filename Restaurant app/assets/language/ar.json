@@ -1402,6 +1402,8 @@
   "order_type_description": "اختر نوع الطلب المناسب لمطعمك",
   "restaurant_availability": "توفر المطعم",
   "restaurant_availability_description": "إيقاف الحالة سيؤدي إلى تعطيل متجرك وسيظهر كغير متاح مؤقتًا في تطبيق ومواقع العملاء.",
+  "restaurant_status_open": "مفتوح",
+  "restaurant_status_closed": "مغلق",
   "home_delivery_description": "إذا تم التفعيل، يمكن للعملاء اختيار خيار التوصيل المنزلي من التطبيق والموقع.",
   "take_away_description": "إذا تم التفعيل، يمكن للعملاء اختيار خيار الاستلام من المطعم من التطبيق والموقع.",
   "dine_in_description": "إذا تم التفعيل، يمكن للعملاء اختيار خيار تناول الطعام داخل المطعم من التطبيق والموقع.",
