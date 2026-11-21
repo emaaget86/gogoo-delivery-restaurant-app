@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 
 class ColorResources {
+  /// Brand primary (GOGO Partner cyan).
+  static const Color primary = primaryTeal;
+  static const Color accent = primaryYellow;
 
   static Color getRightBubbleColor() {
-    return  Theme.of(Get.context!).primaryColor;
+    return Theme.of(Get.context!).primaryColor;
   }
 
   static Color getLeftBubbleColor() {

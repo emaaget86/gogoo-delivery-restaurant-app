@@ -50,6 +50,7 @@ class NotificationHelper {
           }
 
           if(payload.notificationType == NotificationType.order){
+            await stopService();
             Get.toNamed(RouteHelper.getOrderDetailsRoute(payload.orderId, fromNotification: true));
           }else if(payload.notificationType == NotificationType.advertisement){
             Get.toNamed(RouteHelper.getAdvertisementDetailsScreen(advertisementId: payload.advertisementId, fromNotification: true));
@@ -146,6 +147,7 @@ class NotificationHelper {
         }
 
         if(notificationBody.notificationType == NotificationType.order){
+          stopService();
           Get.toNamed(RouteHelper.getOrderDetailsRoute(int.parse(message.data['order_id']), fromNotification: true));
         }else if(notificationBody.notificationType == NotificationType.message){
           Get.toNamed(RouteHelper.getChatRoute(notificationBody: notificationBody, conversationId: notificationBody.conversationId, fromNotification: true));
@@ -529,16 +531,22 @@ Future<ServiceRequestResult> _startService(String? orderId) async {
   }
 }
 
-/// Stop Foreground Service
+/// Stop Foreground Service and looping order alert sound.
 @pragma('vm:entry-point')
 Future<ServiceRequestResult> stopService() async {
   try {
     await _audioPlayer.stop();
-    await _audioPlayer.dispose();
   } catch (e) {
-    customPrint('Audio dispose error: $e');
+    customPrint('Audio stop error: $e');
   }
-  return FlutterForegroundTask.stopService();
+  try {
+    if (await FlutterForegroundTask.isRunningService) {
+      return FlutterForegroundTask.stopService();
+    }
+  } catch (e) {
+    customPrint('Foreground stop error: $e');
+  }
+  return const ServiceRequestSuccess();
 }
 
 /// Foreground Service entry point
@@ -548,33 +556,53 @@ void startCallback() {
 }
 
 /// Foreground Service Task Handler
+///
+/// Keeps the order alert sound looping until the vendor opens/dismisses
+/// the notification or the app stops the service after handling the order.
 class MyTaskHandler extends TaskHandler {
   AudioPlayer? _localPlayer;
 
-  void _playAudio() {
-    _localPlayer?.play(AssetSource('notification.mp3'));
+  Future<void> _ensureLoopingAudio() async {
+    _localPlayer ??= AudioPlayer();
+    try {
+      await _localPlayer!.setReleaseMode(ReleaseMode.loop);
+      await _localPlayer!.setVolume(1.0);
+      final PlayerState state = _localPlayer!.state;
+      if (state != PlayerState.playing) {
+        await _localPlayer!.play(AssetSource('notification.mp3'));
+      }
+    } catch (e) {
+      customPrint('Order alert audio error: $e');
+    }
+  }
+
+  Future<void> _stopLocalAudio() async {
+    try {
+      await _localPlayer?.stop();
+      await _localPlayer?.dispose();
+    } catch (_) {}
+    _localPlayer = null;
   }
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
-    _localPlayer = AudioPlayer();
-    _playAudio();
+    await _ensureLoopingAudio();
   }
 
   @override
   void onRepeatEvent(DateTime timestamp) {
-    _playAudio();
+    // Re-assert looping playback in case the OS paused audio.
+    _ensureLoopingAudio();
   }
 
   @override
   Future<void> onDestroy(DateTime timestamp, bool isTimeout) async {
-    await _localPlayer?.dispose();
-    await stopService();
+    await _stopLocalAudio();
   }
 
   @override
   void onReceiveData(Object data) {
-    _playAudio();
+    _ensureLoopingAudio();
   }
 
   @override
@@ -583,6 +611,7 @@ class MyTaskHandler extends TaskHandler {
     if (id == '1') {
       FlutterForegroundTask.launchApp('/');
     }
+    _stopLocalAudio();
     stopService();
   }
 
@@ -590,14 +619,14 @@ class MyTaskHandler extends TaskHandler {
   void onNotificationPressed() {
     customPrint('onNotificationPressed');
     FlutterForegroundTask.launchApp('/');
+    _stopLocalAudio();
     stopService();
   }
 
   @override
   void onNotificationDismissed() {
-    FlutterForegroundTask.updateService(
-      notificationTitle: 'You got a new order!',
-      notificationText: 'Open app and check order details.',
-    );
+    // Dismissing the service notification stops the looping alert.
+    _stopLocalAudio();
+    stopService();
   }
 }

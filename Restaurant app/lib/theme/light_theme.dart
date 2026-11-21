@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-const Color primaryTeal = Color(0xFF3FD9CD);
+const Color primaryTeal = Color(0xFF00D4D8);
 const Color primaryYellow = Color(0xFFFFD600);
 const Color onPrimaryText = Color(0xFF1A1A1A);
-const Color authTeal = Color(0xFF00A99D);
+const Color authTeal = Color(0xFF00D4D8);
 
 const LinearGradient authGradient = LinearGradient(
   colors: [authTeal, primaryYellow],
@@ -49,7 +49,10 @@ ThemeData light = ThemeData(
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryTeal),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white),
+    style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, disabledForegroundColor: Colors.white70),
+  ),
+  filledButtonTheme: FilledButtonThemeData(
+    style: FilledButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white),
   ),
   checkboxTheme: CheckboxThemeData(
     fillColor: WidgetStateProperty.resolveWith((states) {

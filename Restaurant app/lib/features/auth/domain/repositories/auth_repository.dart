@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthRepository implements AuthRepositoryInterface {
@@ -56,6 +57,7 @@ class AuthRepository implements AuthRepositoryInterface {
     String? deviceToken = '';
     if(!GetPlatform.isWeb) {
       deviceToken = (await FirebaseMessaging.instance.getToken())!;
+      debugPrint('=== FCM DEVICE TOKEN: $deviceToken ===');
     }
     return deviceToken;
   }

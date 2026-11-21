@@ -3,6 +3,7 @@ import 'package:stackfood_multivendor_restaurant/common/models/response_model.da
 import 'package:stackfood_multivendor_restaurant/features/profile/domain/repositories/profile_repository_interface.dart';
 import 'package:stackfood_multivendor_restaurant/util/app_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -76,6 +77,7 @@ class ProfileRepository implements ProfileRepositoryInterface {
     String? deviceToken = '';
     if(!GetPlatform.isWeb) {
       deviceToken = (await FirebaseMessaging.instance.getToken())!;
+      debugPrint('=== FCM DEVICE TOKEN: $deviceToken ===');
     }
     return deviceToken;
   }

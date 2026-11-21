@@ -27,7 +27,10 @@ ThemeData dark = ThemeData(
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryTeal),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white),
+    style: ElevatedButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white, disabledForegroundColor: Colors.white70),
+  ),
+  filledButtonTheme: FilledButtonThemeData(
+    style: FilledButton.styleFrom(backgroundColor: primaryTeal, foregroundColor: Colors.white),
   ),
   checkboxTheme: CheckboxThemeData(
     fillColor: WidgetStateProperty.resolveWith((states) {

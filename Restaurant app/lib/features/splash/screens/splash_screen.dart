@@ -6,6 +6,7 @@ import 'package:stackfood_multivendor_restaurant/features/splash/controllers/spl
 import 'package:stackfood_multivendor_restaurant/features/chat/domain/models/notification_body_model.dart';
 import 'package:stackfood_multivendor_restaurant/features/profile/controllers/profile_controller.dart';
 import 'package:stackfood_multivendor_restaurant/helper/route_helper.dart';
+import 'package:stackfood_multivendor_restaurant/helper/notification_helper.dart';
 import 'package:stackfood_multivendor_restaurant/theme/light_theme.dart';
 import 'package:stackfood_multivendor_restaurant/util/app_constants.dart';
 import 'package:stackfood_multivendor_restaurant/util/images.dart';
@@ -100,6 +101,7 @@ class SplashScreenState extends State<SplashScreen> {
       return;
     }
     if(body!.notificationType == NotificationType.order){
+      await stopService();
       await Get.find<ProfileController>().getProfile();
       Get.toNamed(RouteHelper.getOrderDetailsRoute(body.orderId, fromNotification: true));
     }else if(body.notificationType == NotificationType.message){
@@ -142,27 +144,12 @@ class SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
         key: _globalKey,
         backgroundColor: primaryTeal,
-        body: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image(
-                image: AssetImage(Images.gogoMark),
-                width: 132,
-                height: 132,
-                fit: BoxFit.contain,
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Partner',
-                style: TextStyle(
-                  color: primaryYellow,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ],
+        body: SizedBox.expand(
+          child: Image.asset(
+            Images.splash,
+            fit: BoxFit.contain,
+            alignment: Alignment.center,
+            filterQuality: FilterQuality.high,
           ),
         ),
       ),
