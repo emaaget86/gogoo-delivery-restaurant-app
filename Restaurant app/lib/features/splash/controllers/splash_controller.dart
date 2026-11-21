@@ -29,15 +29,19 @@ class SplashController extends GetxController implements GetxService {
       bool isMaintenanceMode = _configModel!.maintenanceMode!;
       String platform = 'restaurant_app';
       bool isInMaintenance = isMaintenanceMode && _configModel!.maintenanceModeData!.maintenanceSystemSetup!.contains(platform);
+      // SplashScreen owns post-splash routing so the 3s splash is not skipped.
+      bool isOnSplash = Get.currentRoute.contains(RouteHelper.splash);
 
-      if(isInMaintenance) {
-        Get.offNamed(RouteHelper.getUpdateRoute(false));
-      }else if((Get.currentRoute.contains(RouteHelper.update) && !isMaintenanceMode) || (!isInMaintenance)) {
-        if(Get.find<AuthController>().isLoggedIn()) {
-          Get.offAllNamed(RouteHelper.getInitialRoute());
-        }/*else {
-          Get.offAllNamed(RouteHelper.getSignInRoute());
-        }*/
+      if(!isOnSplash) {
+        if(isInMaintenance) {
+          Get.offNamed(RouteHelper.getUpdateRoute(false));
+        }else if((Get.currentRoute.contains(RouteHelper.update) && !isMaintenanceMode) || (!isInMaintenance)) {
+          if(Get.find<AuthController>().isLoggedIn()) {
+            Get.offAllNamed(RouteHelper.getInitialRoute());
+          }/*else {
+            Get.offAllNamed(RouteHelper.getSignInRoute());
+          }*/
+        }
       }
 
       isSuccess = true;
