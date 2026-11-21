@@ -28,10 +28,11 @@ Future<void> main() async {
   if(GetPlatform.isAndroid) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: 'AIzaSyCc3OCd5I2xSlnftZ4bFAbuCzMhgQHLivA',
-        appId: '1:491987943015:android:a6fb4303cc4bf3d18f1ec2',
-        messagingSenderId: '491987943015',
-        projectId: 'stackmart-500c7',
+        apiKey: 'AIzaSyC01DHa4TTouFkdNkkJvkjqmthTvVhNs18',
+        appId: '1:697583329469:android:75e5ed771d3d29bcbe57d4',
+        messagingSenderId: '697583329469',
+        projectId: 'gogodelivery93-62407',
+        storageBucket: 'gogodelivery93-62407.firebasestorage.app',
       ),
     );
   } else {

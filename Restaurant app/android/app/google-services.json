@@ -1,94 +1,64 @@
 {
   "project_info": {
-    "project_number": "491987943015",
-    "project_id": "stackmart-500c7",
-    "storage_bucket": "stackmart-500c7.appspot.com"
+    "project_number": "697583329469",
+    "project_id": "gogodelivery93-62407",
+    "storage_bucket": "gogodelivery93-62407.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:491987943015:android:a6fb4303cc4bf3d18f1ec2",
+        "mobilesdk_app_id": "1:697583329469:android:213454aab60f7f90be57d4",
         "android_client_info": {
-          "package_name": "com.sixamtech.sixam_mart_user"
+          "package_name": "app.gogofood.delivery"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCc3OCd5I2xSlnftZ4bFAbuCzMhgQHLivA"
+          "current_key": "AIzaSyC01DHa4TTouFkdNkkJvkjqmthTvVhNs18"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:491987943015:android:de46aa9776b1b4888f1ec2",
+        "mobilesdk_app_id": "1:697583329469:android:51efdf2ef5d79e7dbe57d4",
         "android_client_info": {
-          "package_name": "com.sixamtech.stack_food_user"
+          "package_name": "com.gogodelivery.user"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCc3OCd5I2xSlnftZ4bFAbuCzMhgQHLivA"
+          "current_key": "AIzaSyC01DHa4TTouFkdNkkJvkjqmthTvVhNs18"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:491987943015:android:63ecc08c0433bf7c8f1ec2",
+        "mobilesdk_app_id": "1:697583329469:android:75e5ed771d3d29bcbe57d4",
         "android_client_info": {
           "package_name": "com.gogofood.merchant"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCc3OCd5I2xSlnftZ4bFAbuCzMhgQHLivA"
+          "current_key": "AIzaSyC01DHa4TTouFkdNkkJvkjqmthTvVhNs18"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "491987943015-agln6biv84krpnngdphj87jkko7r9lb8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
