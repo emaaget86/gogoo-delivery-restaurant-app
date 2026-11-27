@@ -4,7 +4,7 @@ class Images {
   static const String gogoPartnerIcon = 'assets/image/gogo_partner_icon.png';
   static const String gogoMark = 'assets/image/gogo_mark.png';
   static const String logoName = 'assets/image/logo_name.png';
-  static const String splash = 'assets/image/splash.png';
+  static const String splash = 'assets/image/restaurant_icon_splash.png';
   static const String arabic = 'assets/image/arabic.png';
   static const String spanish = 'assets/image/spanish.png';
   static const String english = 'assets/image/english.png';
